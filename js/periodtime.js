@@ -1,0 +1,31 @@
+import { createDOM } from "./utiles/dom.js"
+import { formatDate, formatTemp} from "./utiles/format-data.js"
+import { createDescriptionTime } from "./description-time.js"
+
+export function periodTimeTemplate({temp, date, icon, description}){
+  return `
+    <li class="dayWeather-item is-selected">
+    <span class="dayWeather-time">${date}</span>
+    <img class="dayWeather-icon" height="48" width="48" src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}" rain="">
+    <span class="dayWeather-temp">${temp}</span>
+    </li>
+    `
+}
+
+//is-selected
+
+export function createPeriodTime(weather){
+  const dateOptios = {
+    hour : 'numeric',
+    hour12: true,
+  }
+  const temp = formatTemp(weather.main.temp)
+  const date = formatDate(new Date(weather.dt * 1000),dateOptios)
+  const config ={
+    temp: temp,
+    date: date,
+    icon: weather.weather[0].icon,
+    description: weather.weather[0].description,
+  }
+  return createDOM(periodTimeTemplate(config))
+}
